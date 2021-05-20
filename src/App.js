@@ -1,6 +1,17 @@
-import './App.css';
+import { useState } from "react";
+import "./App.css";
 
 function App() {
+  const [listItems, setListItems] = useState([]);
+
+  function handleBtnClick(event) {
+    event.preventDefault();
+
+    setListItems([...listItems, "Item_" + (listItems.length + 1)]);
+
+    console.log("Added new Item.", listItems);
+  }
+
   return (
     <div className="App">
       <header className="App-header">
@@ -16,6 +27,12 @@ function App() {
           Learn React
         </a>
       </header>
+      <ul>
+        {listItems.map((listItem) => (
+          <li>{listItem}</li>
+        ))}
+      </ul>
+      <button onClick={handleBtnClick}>Add List Item</button>
     </div>
   );
 }

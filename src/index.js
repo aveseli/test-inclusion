@@ -9,14 +9,40 @@ const observableTarget = document.body;
 
 // Callback function when changes occurs
 function mutationCallback(mutations, observer) {
-  console.log("mutation record", mutations);
+  let rootElement = null;
 
-  // TODO iterate mutations and node list and search for the react root node!
-  // when found, do the rendering.
-  const rootElem = document.getElementById("root");
-  if (rootElem) {
-    renderReactApp(rootElem);
+  for (let mutation of mutations) {
+    if (rootElement || mutation.type !== "childList") {
+      break;
+    }
+
+    for (let node of mutation.addedNodes) {
+      rootElement = searchReactAnchor(node);
+      if (rootElement) {
+        break;
+      }
+    }
   }
+
+  if (rootElement) {
+    renderReactApp(rootElement);
+  }
+}
+
+function searchReactAnchor(node) {
+  if (node.id === "root") {
+    return node;
+  }
+
+  let returnNode = null;
+  for (const child of node.childNodes) {
+    returnNode = searchReactAnchor(child);
+    if (returnNode) {
+      break;
+    }
+  }
+
+  return returnNode;
 }
 
 // Create a new instance of MutationObserver with callback in params
