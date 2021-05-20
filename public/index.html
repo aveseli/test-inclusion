@@ -25,10 +25,43 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>React App</title>
+    <script>
+      function onBtnAdd() {
+        console.log("On Button Add clicked");
+
+        if (document.getElementById("toBeRemoved")) return;
+
+        var parent = document.getElementById("parent");
+        var toBeRemoved = document.createElement("div");
+        toBeRemoved.setAttribute("id", "toBeRemoved");
+        var span = document.createElement("span");
+        var root = document.createElement("div");
+        root.setAttribute("id", "root");
+        span.appendChild(root);
+        toBeRemoved.appendChild(span);
+        parent.appendChild(toBeRemoved);
+      }
+
+      function onBtnRemove() {
+        console.log("Button Remove clicked");
+        var toBeRemoved = document.getElementById("toBeRemoved");
+        if (toBeRemoved) toBeRemoved.remove();
+      }
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
+
+    <button onclick="onBtnAdd()">Add</button>
+    <button onclick="onBtnRemove()">Remove</button>
+    <form id="parent">
+      <div id="toBeRemoved">
+        <span>
+          <div id="root"></div>
+        </span>
+      </div>
+    </form>
+
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
@@ -39,5 +72,12 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <script>
+      console.log("script has been called!");
+      function docIsReady() {
+        window.renderReactApp(document.getElementById("root"));
+      }
+      document.addEventListener("DOMContentLoaded", docIsReady, false);
+    </script>
   </body>
 </html>
